@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fournisseurs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Liste des Fournisseurs</h1>
+
+    <div class="nav">
+        <a th:href="@{/}">Accueil</a>
+        <a th:href="@{/articles}">Articles</a>
+        <a th:href="@{/fournisseurs}">Fournisseurs</a>
+        <a th:href="@{/mouvements}">Mouvements</a>
+    </div>
+
+    <a class="btn" th:href="@{/fournisseurs/new}">Ajouter un fournisseur</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Ville</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="f : ${fournisseurs}">
+            <td th:text="${f.id}"></td>
+            <td th:text="${f.nom}"></td>
+            <td th:text="${f.ville}"></td>
+            <td>
+                <a th:href="@{/fournisseurs/edit/{id}(id=${f.id})}">Modifier</a>
+                <a th:href="@{/fournisseurs/delete/{id}(id=${f.id})}" onclick="return confirm('Supprimer ce fournisseur ?')">Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

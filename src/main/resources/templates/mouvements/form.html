@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire Mouvement</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Formulaire Mouvement</h1>
+
+    <form th:action="@{/mouvements/save}" th:object="${mouvement}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <label>Type</label>
+        <select th:field="*{type}">
+            <option value="">-- Choisir le type --</option>
+            <option th:each="t : ${types}" th:value="${t}" th:text="${t}"></option>
+        </select>
+
+        <label>Quantité</label>
+        <input type="number" th:field="*{quantite}">
+        <small class="error" th:if="${#fields.hasErrors('quantite')}" th:errors="*{quantite}"></small>
+
+        <label>Date</label>
+        <input type="date" th:field="*{dateMvt}">
+        <small class="error" th:if="${#fields.hasErrors('dateMvt')}" th:errors="*{dateMvt}"></small>
+
+        <label>Article</label>
+        <select name="articleId">
+            <option value="">-- Choisir un article --</option>
+            <option th:each="a : ${articles}"
+                    th:value="${a.id}"
+                    th:text="${a.designation}">
+            </option>
+        </select>
+
+        <button type="submit">Enregistrer</button>
+    </form>
+</div>
+</body>
+</html>

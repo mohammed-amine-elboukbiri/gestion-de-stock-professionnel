@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mouvements</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Liste des Mouvements</h1>
+
+    <div class="nav">
+        <a th:href="@{/}">Accueil</a>
+        <a th:href="@{/articles}">Articles</a>
+        <a th:href="@{/fournisseurs}">Fournisseurs</a>
+        <a th:href="@{/mouvements}">Mouvements</a>
+    </div>
+
+    <form method="get" th:action="@{/mouvements}" class="filter-form">
+        <select name="type">
+            <option value="">-- Type --</option>
+            <option th:each="t : ${types}"
+                    th:value="${t}"
+                    th:text="${t}"
+                    th:selected="${selectedType != null and selectedType.name() == t.name()}">
+            </option>
+        </select>
+
+        <input type="date" name="dateDebut">
+        <input type="date" name="dateFin">
+
+        <button type="submit">Filtrer</button>
+    </form>
+
+    <a class="btn" th:href="@{/mouvements/new}">Ajouter un mouvement</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Quantité</th>
+            <th>Date</th>
+            <th>Article</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="m : ${mouvements}">
+            <td th:text="${m.id}"></td>
+            <td th:text="${m.type}"></td>
+            <td th:text="${m.quantite}"></td>
+            <td th:text="${m.dateMvt}"></td>
+            <td th:text="${m.article != null ? m.article.designation : ''}"></td>
+            <td>
+                <a th:href="@{/mouvements/delete/{id}(id=${m.id})}" onclick="return confirm('Supprimer ce mouvement ?')">Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

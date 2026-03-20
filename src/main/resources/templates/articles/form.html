@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire Article</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Formulaire Article</h1>
+
+    <form th:action="@{/articles/save}" th:object="${article}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <label>Code</label>
+        <input type="text" th:field="*{code}">
+        <small class="error" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></small>
+
+        <label>Désignation</label>
+        <input type="text" th:field="*{designation}">
+        <small class="error" th:if="${#fields.hasErrors('designation')}" th:errors="*{designation}"></small>
+
+        <label>Catégorie</label>
+        <input type="text" th:field="*{categorie}">
+        <small class="error" th:if="${#fields.hasErrors('categorie')}" th:errors="*{categorie}"></small>
+
+        <label>Stock initial</label>
+        <input type="number" th:field="*{stock}">
+        <small class="error" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></small>
+
+        <label>Seuil d'alerte</label>
+        <input type="number" th:field="*{seuilAlerte}">
+        <small class="error" th:if="${#fields.hasErrors('seuilAlerte')}" th:errors="*{seuilAlerte}"></small>
+
+        <label>Fournisseur</label>
+        <select name="fournisseurId">
+            <option value="">-- Choisir un fournisseur --</option>
+            <option th:each="f : ${fournisseurs}"
+                    th:value="${f.id}"
+                    th:text="${f.nom}"
+                    th:selected="${article.fournisseur != null and article.fournisseur.id == f.id}">
+            </option>
+        </select>
+
+        <button type="submit">Enregistrer</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion de Stock</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Mini Projet Thymeleaf - Gestion de Stock</h1>
+
+    <div class="nav">
+        <a th:href="@{/}">Accueil</a>
+        <a th:href="@{/articles}">Articles</a>
+        <a th:href="@{/fournisseurs}">Fournisseurs</a>
+        <a th:href="@{/mouvements}">Mouvements</a>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <h3>Total Articles</h3>
+            <p th:text="${totalArticles}"></p>
+        </div>
+
+        <div class="card">
+            <h3>Stock Critique</h3>
+            <p th:text="${stockCritique}"></p>
+        </div>
+
+        <div class="card">
+            <h3>Total Stock</h3>
+            <p th:text="${totalStock}"></p>
+        </div>
+
+        <div class="card">
+            <h3>Entrées</h3>
+            <p th:text="${totalEntrees}"></p>
+        </div>
+
+        <div class="card">
+            <h3>Sorties</h3>
+            <p th:text="${totalSorties}"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

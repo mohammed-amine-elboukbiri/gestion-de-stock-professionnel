@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Articles</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Liste des Articles</h1>
+
+    <div class="nav">
+        <a th:href="@{/}">Accueil</a>
+        <a th:href="@{/articles}">Articles</a>
+        <a th:href="@{/fournisseurs}">Fournisseurs</a>
+        <a th:href="@{/mouvements}">Mouvements</a>
+    </div>
+
+    <form method="get" th:action="@{/articles}" class="filter-form">
+        <input type="text" name="categorie" placeholder="Catégorie" th:value="${categorie}">
+        <label>
+            <input type="checkbox" name="critique" value="true" th:checked="${critique}">
+            Stock critique
+        </label>
+        <button type="submit">Filtrer</button>
+    </form>
+
+    <a class="btn" th:href="@{/articles/new}">Ajouter un article</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Code</th>
+            <th>Désignation</th>
+            <th>Catégorie</th>
+            <th>Stock</th>
+            <th>Seuil</th>
+            <th>Fournisseur</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="a : ${articles}">
+            <td th:text="${a.id}"></td>
+            <td th:text="${a.code}"></td>
+            <td th:text="${a.designation}"></td>
+            <td th:text="${a.categorie}"></td>
+            <td th:text="${a.stock}"></td>
+            <td th:text="${a.seuilAlerte}"></td>
+            <td th:text="${a.fournisseur != null ? a.fournisseur.nom : 'Aucun'}"></td>
+            <td>
+                <a th:href="@{/articles/edit/{id}(id=${a.id})}">Modifier</a>
+                <a th:href="@{/articles/delete/{id}(id=${a.id})}" onclick="return confirm('Supprimer cet article ?')">Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

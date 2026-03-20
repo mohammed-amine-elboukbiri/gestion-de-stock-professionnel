@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire Fournisseur</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Formulaire Fournisseur</h1>
+
+    <form th:action="@{/fournisseurs/save}" th:object="${fournisseur}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <label>Nom</label>
+        <input type="text" th:field="*{nom}">
+        <small class="error" th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></small>
+
+        <label>Ville</label>
+        <input type="text" th:field="*{ville}">
+        <small class="error" th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}"></small>
+
+        <button type="submit">Enregistrer</button>
+    </form>
+</div>
+</body>
+</html>

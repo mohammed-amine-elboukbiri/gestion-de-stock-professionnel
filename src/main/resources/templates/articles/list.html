@@ -9,23 +9,33 @@
 <div class="container">
     <h1>Liste des Articles</h1>
 
+    <div th:if="${successMessage}" class="alert success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert error" th:text="${errorMessage}"></div>
+
     <div class="nav">
         <a th:href="@{/}">Accueil</a>
-        <a th:href="@{/articles}">Articles</a>
-        <a th:href="@{/fournisseurs}">Fournisseurs</a>
-        <a th:href="@{/mouvements}">Mouvements</a>
     </div>
 
-    <form method="get" th:action="@{/articles}" class="filter-form">
-        <input type="text" name="categorie" placeholder="Catégorie" th:value="${categorie}">
+    <form method="get" th:action="@{/articles}" class="filter-form" id="filterForm" autocomplete="off">
+        <div class="autocomplete-wrapper">
+            <input
+                    type="text"
+                    id="categorieInput"
+                    name="categorie"
+                    placeholder="Catégorie"
+                    th:value="${categorie}">
+            <div id="categorieSuggestions" class="suggestions"></div>
+        </div>
+
         <label>
             <input type="checkbox" name="critique" value="true" th:checked="${critique}">
             Stock critique
         </label>
+
         <button type="submit">Filtrer</button>
     </form>
 
-    <a class="btn" th:href="@{/articles/new}">Ajouter un article</a>
+    <a class="btn-link" th:href="@{/articles/new}">Ajouter un article</a>
 
     <table>
         <thead>
@@ -36,6 +46,7 @@
             <th>Catégorie</th>
             <th>Stock</th>
             <th>Seuil</th>
+            <th>Prix Vente</th>
             <th>Fournisseur</th>
             <th>Actions</th>
         </tr>
@@ -48,14 +59,76 @@
             <td th:text="${a.categorie}"></td>
             <td th:text="${a.stock}"></td>
             <td th:text="${a.seuilAlerte}"></td>
+            <td th:text="${a.prixVente}"></td>
             <td th:text="${a.fournisseur != null ? a.fournisseur.nom : 'Aucun'}"></td>
             <td>
-                <a th:href="@{/articles/edit/{id}(id=${a.id})}">Modifier</a>
-                <a th:href="@{/articles/delete/{id}(id=${a.id})}" onclick="return confirm('Supprimer cet article ?')">Supprimer</a>
+                <a th:href="@{/articles/edit/{id}(id=${a.id})}" class="btn-action btn-edit">Modifier</a>
+
+                <a th:href="@{/articles/delete/{id}(id=${a.id})}"
+                   class="btn-action btn-delete"
+                   onclick="return confirm('Supprimer cet article ?')">Supprimer</a>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
+
+<script th:inline="javascript">
+    const categories = /*[[${categories}]]*/ [];
+    const input = document.getElementById('categorieInput');
+    const suggestionsBox = document.getElementById('categorieSuggestions');
+    const form = document.getElementById('filterForm');
+
+    function afficherSuggestions(valeur) {
+        suggestionsBox.innerHTML = '';
+
+        const texte = valeur.trim().toLowerCase();
+
+        if (texte.length === 0) {
+            suggestionsBox.style.display = 'none';
+            return;
+        }
+
+        const resultats = categories.filter(categorie =>
+            categorie.toLowerCase().includes(texte)
+        );
+
+        if (resultats.length === 0) {
+            suggestionsBox.style.display = 'none';
+            return;
+        }
+
+        resultats.forEach(categorie => {
+            const item = document.createElement('div');
+            item.className = 'suggestion-item';
+            item.textContent = categorie;
+
+            item.addEventListener('click', () => {
+                input.value = categorie;
+                suggestionsBox.innerHTML = '';
+                suggestionsBox.style.display = 'none';
+                form.submit();
+            });
+
+            suggestionsBox.appendChild(item);
+        });
+
+        suggestionsBox.style.display = 'block';
+    }
+
+    input.addEventListener('input', function () {
+        afficherSuggestions(this.value);
+    });
+
+    input.addEventListener('focus', function () {
+        afficherSuggestions(this.value);
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.autocomplete-wrapper')) {
+            suggestionsBox.style.display = 'none';
+        }
+    });
+</script>
 </body>
 </html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Client</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Client</h1>
+
+    <form th:action="@{/clients/save}" th:object="${client}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <label>Nom</label>
+        <input type="text" th:field="*{nom}" required>
+
+        <label>Téléphone</label>
+        <input type="text" th:field="*{telephone}">
+
+        <label>Adresse</label>
+        <input type="text" th:field="*{adresse}">
+
+        <button type="submit">Enregistrer</button>
+    </form>
+
+    <div class="actions-bar">
+        <a th:href="@{/clients}" class="btn-back">Retour</a>
+    </div>
+</div>
+</body>
+</html>

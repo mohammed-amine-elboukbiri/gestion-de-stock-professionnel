@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion - Gestion de Stock</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", sans-serif;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            width: 380px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1e3a8a;
+        }
+
+        .login-box p {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #2563eb;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #2563eb;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-login:hover {
+            background: #1e40af;
+        }
+
+        .alert {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .users-info {
+            margin-top: 20px;
+            padding: 12px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <h2>Connexion</h2>
+    <p>Gestion de Stock</p>
+
+    <div th:if="${param.error}" class="alert alert-error">
+        Identifiants incorrects
+    </div>
+
+    <div th:if="${param.logout}" class="alert alert-success">
+        Déconnexion réussie
+    </div>
+
+    <form th:action="@{/login}" method="post">
+
+        <div class="input-group">
+            <label>Nom d'utilisateur</label>
+            <input type="text" name="username" required>
+        </div>
+
+        <div class="input-group">
+            <label>Mot de passe</label>
+            <input type="password" name="password" required>
+        </div>
+
+        <!-- CSRF IMPORTANT -->
+        <input type="hidden"
+               th:name="${_csrf.parameterName}"
+               th:value="${_csrf.token}" />
+
+        <button type="submit" class="btn-login">
+            Se connecter
+        </button>
+    </form>
+
+    <div class="users-info">
+        <strong>Comptes de test :</strong><br>
+        admin / admin123<br>
+        amine / 1234
+    </div>
+
+</div>
+
+</body>
+</html>

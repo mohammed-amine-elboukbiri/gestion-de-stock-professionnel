@@ -2,40 +2,57 @@
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Formulaire Mouvement</title>
+    <title>Nouveau Mouvement</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="container">
-    <h1>Formulaire Mouvement</h1>
+    <h1>Ajouter un Mouvement</h1>
 
     <form th:action="@{/mouvements/save}" th:object="${mouvement}" method="post">
-        <input type="hidden" th:field="*{id}">
 
-        <label>Type</label>
-        <select th:field="*{type}">
-            <option value="">-- Choisir le type --</option>
-            <option th:each="t : ${types}" th:value="${t}" th:text="${t}"></option>
-        </select>
-
-        <label>Quantité</label>
-        <input type="number" th:field="*{quantite}">
-        <small class="error" th:if="${#fields.hasErrors('quantite')}" th:errors="*{quantite}"></small>
-
-        <label>Date</label>
-        <input type="date" th:field="*{dateMvt}">
-        <small class="error" th:if="${#fields.hasErrors('dateMvt')}" th:errors="*{dateMvt}"></small>
-
-        <label>Article</label>
-        <select name="articleId">
+        <label for="article">Article</label>
+        <select id="article" th:field="*{article.id}">
             <option value="">-- Choisir un article --</option>
             <option th:each="a : ${articles}"
                     th:value="${a.id}"
                     th:text="${a.designation}">
             </option>
         </select>
+        <div class="error" th:if="${#fields.hasErrors('article')}" th:errors="*{article}"></div>
+
+        <label for="type">Type</label>
+        <select id="type" th:field="*{type}">
+            <option value="">-- Choisir un type --</option>
+            <option th:each="t : ${types}"
+                    th:value="${t}"
+                    th:text="${t}">
+            </option>
+        </select>
+        <div class="error" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+
+        <label for="source">Source</label>
+        <select id="source" th:field="*{source}">
+            <option value="">-- Choisir une source --</option>
+            <option th:each="s : ${sources}"
+                    th:value="${s}"
+                    th:text="${s}">
+            </option>
+        </select>
+        <div class="error" th:if="${#fields.hasErrors('source')}" th:errors="*{source}"></div>
+
+        <label for="quantite">Quantité</label>
+        <input id="quantite" type="number" min="1" th:field="*{quantite}">
+        <div class="error" th:if="${#fields.hasErrors('quantite')}" th:errors="*{quantite}"></div>
+
+        <label for="referenceDocument">Référence document</label>
+        <input id="referenceDocument" type="text" th:field="*{referenceDocument}">
+
+        <label for="observation">Observation</label>
+        <textarea id="observation" th:field="*{observation}"></textarea>
 
         <button type="submit">Enregistrer</button>
+        <a th:href="@{/mouvements}" class="btn-back">← Retour</a>
     </form>
 </div>
 </body>

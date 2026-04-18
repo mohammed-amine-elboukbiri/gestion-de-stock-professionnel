@@ -9,15 +9,25 @@
 <div class="container">
     <h1>Formulaire Fournisseur</h1>
 
+    <a class="btn-back" th:href="@{/fournisseurs}">Retour à la liste des fournisseurs</a>
+
     <form th:action="@{/fournisseurs/save}" th:object="${fournisseur}" method="post">
         <input type="hidden" th:field="*{id}">
 
-        <label>Nom</label>
-        <input type="text" th:field="*{nom}">
+        <label for="nom">Nom</label>
+        <input id="nom" type="text" th:field="*{nom}">
         <small class="error" th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></small>
 
-        <label>Ville</label>
-        <input type="text" th:field="*{ville}">
+        <label for="adresse">Adresse</label>
+        <input id="adresse" type="text" th:field="*{adresse}">
+        <small class="error" th:if="${#fields.hasErrors('adresse')}" th:errors="*{adresse}"></small>
+
+        <label for="telephone">Téléphone</label>
+        <input id="telephone" type="text" th:field="*{telephone}">
+        <small class="error" th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></small>
+
+        <label for="ville">Ville</label>
+        <input id="ville" type="text" th:field="*{ville}">
         <small class="error" th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}"></small>
 
         <button type="submit">Enregistrer</button>

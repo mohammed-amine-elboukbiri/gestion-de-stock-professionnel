@@ -1,126 +1,302 @@
 body {
     font-family: Arial, sans-serif;
-    background: #f5f7fb;
+    background: #f4f7fb;
     margin: 0;
     padding: 0;
 }
 
 .container {
-    width: 90%;
-    max-width: 1100px;
+    width: 95%;
+    max-width: 1300px;
     margin: 30px auto;
-    background: #ffffff;
+    background: #fff;
     padding: 25px;
-    border-radius: 14px;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-h1 {
+h1, h2, h3 {
     color: #1f2937;
-    margin-bottom: 20px;
 }
 
+/* ===== NAVBAR ===== */
 .nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
     margin-bottom: 20px;
 }
 
 .nav a {
-    display: inline-block;
-    margin-right: 10px;
-    padding: 10px 14px;
-    background: #4f46e5;
-    color: white;
     text-decoration: none;
-    border-radius: 8px;
+    background: #0f766e;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    line-height: 1.2;
+    transition: 0.3s ease;
 }
 
 .nav a:hover {
-    background: #4338ca;
+    background: #115e59;
 }
 
-.btn,
-button {
-    display: inline-block;
-    padding: 10px 14px;
-    background: #16a34a;
-    color: white;
-    text-decoration: none;
+/* ===== LOGOUT ===== */
+.logout-form {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    margin: 0 !important;
+    width: auto !important;
+}
+
+.logout-form input[type="hidden"] {
+    display: none;
+}
+
+.logout-btn {
+    width: auto !important;
+    padding: 12px 18px !important;
+    border-radius: 10px !important;
     border: none;
-    border-radius: 8px;
+    background: #ef4444 !important;
+    color: white !important;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
-    margin: 12px 0;
+    min-height: 44px;
+    transition: 0.3s ease;
 }
 
-.btn:hover,
-button:hover {
-    background: #15803d;
+.logout-btn:hover {
+    background: #dc2626 !important;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* ===== CARDS ===== */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
 }
 
-input,
-select {
-    padding: 10px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 14px;
+.card {
+    background: #ecfeff;
+    border-left: 5px solid #0f766e;
+    padding: 15px;
+    border-radius: 10px;
 }
 
+.card p {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 8px 0 0;
+}
+
+/* ===== TABLE ===== */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 table th,
 table td {
-    border: 1px solid #e5e7eb;
-    padding: 12px;
+    border: 1px solid #d1d5db;
+    padding: 14px 12px;
     text-align: left;
+    vertical-align: middle;
 }
 
 table th {
-    background: #eef2ff;
+    background: #0f766e;
+    color: white;
 }
 
-.error {
-    color: red;
-    font-size: 13px;
+/* ===== FORM ===== */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
+input,
+select,
+button,
+textarea {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+    box-sizing: border-box;
+    width: 100%;
 }
 
-.card {
-    background: #eef2ff;
-    padding: 20px;
-    border-radius: 12px;
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+button {
+    background: #0f766e;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background: #115e59;
+}
+
+/* ===== BUTTONS ===== */
+.btn-link {
+    display: inline-block;
+    margin-bottom: 15px;
+    text-decoration: none;
+    background: #0f766e;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 2px solid #0f766e;
+    transition: 0.3s ease;
+}
+
+.btn-link:hover {
+    background: white;
+    color: #0f766e;
+}
+
+.btn-action,
+.btn-add,
+.btn-back {
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s ease;
+    border: 2px solid transparent;
+    width: fit-content;
+}
+
+.btn-add {
+    background: #0f766e;
+    color: white;
+}
+
+.btn-add:hover {
+    background: white;
+    color: #0f766e;
+}
+
+.btn-edit {
+    background-color: #facc15;
+    color: #78350f;
+}
+
+.btn-delete {
+    background-color: #ef4444;
+    color: white;
+}
+
+.btn-back {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.btn-pdf {
+    background-color: #7c3aed;
+    color: white;
+}
+
+/* ===== ALERTS ===== */
+.alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-weight: 600;
+}
+
+.alert.success {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.alert.error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
+/* ===== FILTER ===== */
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.filter-form label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-form input[type="checkbox"] {
+    width: auto;
+}
+
+/* ===== TABLE ACTIONS ===== */
+.table-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.action-cell {
     text-align: center;
 }
 
-.card h3 {
-    margin-bottom: 10px;
-    color: #374151;
-}
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .container {
+        width: 96%;
+        padding: 18px;
+    }
 
-.card p {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 0;
-    color: #111827;
-}
+    h1 {
+        font-size: 28px;
+    }
 
-.filter-form {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
+    .nav {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .nav a,
+    .logout-btn {
+        width: 100% !important;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
 }

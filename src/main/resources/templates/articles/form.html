@@ -14,23 +14,33 @@
 
         <label>Code</label>
         <input type="text" th:field="*{code}">
-        <small class="error" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></small>
 
         <label>Désignation</label>
         <input type="text" th:field="*{designation}">
-        <small class="error" th:if="${#fields.hasErrors('designation')}" th:errors="*{designation}"></small>
 
         <label>Catégorie</label>
         <input type="text" th:field="*{categorie}">
-        <small class="error" th:if="${#fields.hasErrors('categorie')}" th:errors="*{categorie}"></small>
+
+        <label>Unité</label>
+        <input type="text" th:field="*{unite}">
+
+        <label>Matière</label>
+        <input type="text" th:field="*{matiere}">
+
+        <label>Épaisseur</label>
+        <input type="number" step="0.01" th:field="*{epaisseur}">
 
         <label>Stock initial</label>
         <input type="number" th:field="*{stock}">
-        <small class="error" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></small>
 
         <label>Seuil d'alerte</label>
         <input type="number" th:field="*{seuilAlerte}">
-        <small class="error" th:if="${#fields.hasErrors('seuilAlerte')}" th:errors="*{seuilAlerte}"></small>
+
+        <label>Prix d'achat</label>
+        <input type="number" step="0.01" th:field="*{prixAchat}">
+
+        <label>Prix de vente</label>
+        <input type="number" step="0.01" th:field="*{prixVente}">
 
         <label>Fournisseur</label>
         <select name="fournisseurId">
@@ -42,7 +52,9 @@
             </option>
         </select>
 
+        <br><br>
         <button type="submit">Enregistrer</button>
+        <a th:href="@{/articles}" class="btn-back">Retour</a>
     </form>
 </div>
 </body>

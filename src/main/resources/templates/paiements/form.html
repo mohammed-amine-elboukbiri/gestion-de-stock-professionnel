@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${paiement.id != null} ? 'Modifier Paiement' : 'Nouveau Paiement'">Nouveau Paiement</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${paiement.id != null} ? 'Modifier Paiement' : 'Nouveau Paiement'">Nouveau Paiement</h1>
+
+
+    <form id="paiementForm" th:object="${paiement}" method="post">
+        <label>Client</label>
+        <select id="clientId" required>
+            <option value="">-- Choisir client --</option>
+            <option th:each="c : ${clients}"
+                    th:value="${c.id}"
+                    th:text="${c.nom + ' | Solde: ' + c.solde}"
+                    th:selected="${paiement.client != null and paiement.client.id == c.id}">
+            </option>
+        </select>
+
+        <label>Mode</label>
+        <select th:field="*{mode}">
+            <option value="ESPECE">Espèce</option>
+            <option value="CHEQUE">Chèque</option>
+            <option value="VIREMENT">Virement</option>
+        </select>
+
+        <label>Montant</label>
+        <input type="number" step="0.01" th:field="*{montant}" required>
+
+        <label>Référence</label>
+        <input type="text" th:field="*{reference}">
+
+        <label>Observation</label>
+        <input type="text" th:field="*{observation}">
+
+        <button type="submit">Enregistrer</button>
+    </form>
+
+    <div class="actions-bar">
+        <a th:href="@{/paiements}" class="btn-back">Retour</a>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    document.getElementById('paiementForm').addEventListener('submit', function (e) {
+        const clientId = document.getElementById('clientId').value;
+        if (!clientId) {
+            e.preventDefault();
+            alert('Choisissez un client');
+            return;
+        }
+
+        const paiementId = /*[[${paiement.id}]]*/ null;
+
+        if (paiementId !== null) {
+            this.action = '/paiements/update/' + paiementId + '/' + clientId;
+        } else {
+            this.action = '/paiements/save/' + clientId;
+        }
+    });
+</script>
+</body>
+</html>

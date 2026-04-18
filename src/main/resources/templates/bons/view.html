@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Détail Bon</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Détail Bon de Livraison</h1>
+
+    <p><strong>Numéro :</strong> <span th:text="${bon.numero}"></span></p>
+    <p><strong>Date :</strong> <span th:text="${bon.dateCreation}"></span></p>
+    <p><strong>Client :</strong> <span th:text="${bon.client.nom}"></span></p>
+    <p><strong>Statut :</strong> <span th:text="${bon.statut}"></span></p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Article</th>
+            <th>Quantité</th>
+            <th>Prix U</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ligne : ${bon.lignes}">
+            <td th:text="${ligne.article.designation}"></td>
+            <td th:text="${ligne.quantite}"></td>
+            <td th:text="${ligne.prixUnitaire}"></td>
+            <td th:text="${ligne.total}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>Total : <span th:text="${bon.total}"></span></h2>
+
+    <div class="nav">
+        <a th:href="@{/bons}">Retour</a>
+        <a th:href="@{/bons/pdf/{id}(id=${bon.id})}">Télécharger PDF</a>
+    </div>
+</div>
+</body>
+</html>

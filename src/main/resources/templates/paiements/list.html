@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Paiements</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Paiements</h1>
+
+    <div class="nav">
+        <a th:href="@{/}">Accueil</a>
+    </div>
+
+    <div class="nav">
+        <a th:href="@{/paiements/new}">Nouveau paiement</a>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Mode</th>
+            <th>Montant</th>
+            <th>Référence</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${paiements}">
+            <td th:text="${p.datePaiement}"></td>
+            <td th:text="${p.client.nom}"></td>
+            <td th:text="${p.mode}"></td>
+            <td th:text="${p.montant}"></td>
+            <td th:text="${p.reference}"></td>
+            <td class="action-cell">
+                <div class="table-actions">
+                    <a th:href="@{/paiements/edit/{id}(id=${p.id})}" class="btn-action btn-edit">
+                        Modifier
+                    </a>
+                    <a th:href="@{/paiements/delete/{id}(id=${p.id})}"
+                       class="btn-action btn-delete"
+                       onclick="return confirm('Voulez-vous vraiment supprimer ce paiement ?');">
+                        Supprimer
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

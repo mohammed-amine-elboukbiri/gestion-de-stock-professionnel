@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bons de livraison</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+
+    <h1>Bons de livraison</h1>
+
+    <div class="nav">
+        <a th:href="@{/}">Accueil</a>
+    </div>
+    <div class="actions-bar">
+        <a th:href="@{/bons/new}" class="btn-add">Nouveau bon</a>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Numéro</th>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Total</th>
+            <th>Montant payé</th>
+            <th>Reste à payer</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="bon : ${bons}">
+            <td th:text="${bon.numero}"></td>
+            <td th:text="${#temporals.format(bon.dateCreation, 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${bon.client.nom}"></td>
+            <td th:text="${bon.total}"></td>
+            <td th:text="${bon.montantPaye}"></td>
+            <td th:text="${bon.resteAPayer}"></td>
+            <td th:text="${bon.statut}"></td>
+
+            <td class="table-actions">
+                <a th:href="@{'/bons/view/' + ${bon.id}}"
+                   class="btn-action btn-add">
+                    Voir
+                </a>
+
+                <a th:href="@{'/bons/pdf/' + ${bon.id}}"
+                   class="btn-action btn-pdf">
+                    PDF
+                </a>
+
+                <a th:href="@{'/bons/delete/' + ${bon.id}}"
+                   class="btn-action btn-delete"
+                   onclick="return confirm('Supprimer ce bon de livraison ?');">
+                    Supprimer
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

@@ -11,18 +11,20 @@
 
     <div class="nav">
         <a th:href="@{/}">Accueil</a>
-        <a th:href="@{/articles}">Articles</a>
-        <a th:href="@{/fournisseurs}">Fournisseurs</a>
-        <a th:href="@{/mouvements}">Mouvements</a>
     </div>
 
-    <a class="btn" th:href="@{/fournisseurs/new}">Ajouter un fournisseur</a>
+    <div th:if="${success}" class="alert success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert error" th:text="${error}"></div>
+
+    <a class="btn-link" th:href="@{/fournisseurs/new}">Ajouter un fournisseur</a>
 
     <table>
         <thead>
         <tr>
             <th>ID</th>
             <th>Nom</th>
+            <th>Adresse</th>
+            <th>Téléphone</th>
             <th>Ville</th>
             <th>Actions</th>
         </tr>
@@ -31,10 +33,20 @@
         <tr th:each="f : ${fournisseurs}">
             <td th:text="${f.id}"></td>
             <td th:text="${f.nom}"></td>
+            <td th:text="${f.adresse}"></td>
+            <td th:text="${f.telephone}"></td>
             <td th:text="${f.ville}"></td>
             <td>
-                <a th:href="@{/fournisseurs/edit/{id}(id=${f.id})}">Modifier</a>
-                <a th:href="@{/fournisseurs/delete/{id}(id=${f.id})}" onclick="return confirm('Supprimer ce fournisseur ?')">Supprimer</a>
+                <a class="btn-action btn-edit"
+                   th:href="@{/fournisseurs/edit/{id}(id=${f.id})}">
+                    Modifier
+                </a>
+
+                <a class="btn-action btn-delete"
+                   th:href="@{/fournisseurs/delete/{id}(id=${f.id})}"
+                   onclick="return confirm('Supprimer ce fournisseur ?')">
+                    Supprimer
+                </a>
             </td>
         </tr>
         </tbody>

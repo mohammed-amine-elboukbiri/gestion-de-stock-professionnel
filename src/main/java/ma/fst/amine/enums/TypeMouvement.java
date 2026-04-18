@@ -1,4 +1,4 @@
-package ma.fst.amine.entities;
+package ma.fst.amine.enums;
 
 public enum TypeMouvement {
     ENTREE,

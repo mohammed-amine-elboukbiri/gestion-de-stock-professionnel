@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Clients</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Liste des clients</h1>
+
+    <div class="nav">
+        <a th:href="@{/}">Accueil</a>
+    </div>
+
+    <div th:if="${success}" class="alert success" id="alertBox">
+        <span th:text="${success}"></span>
+    </div>
+
+    <div th:if="${error}" class="alert error" id="alertBox">
+        <span th:text="${error}"></span>
+    </div>
+
+    <div class="actions-bar">
+        <a th:href="@{/clients/new}" class="btn-add">Nouveau client</a>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Téléphone</th>
+            <th>Adresse</th>
+            <th>Solde</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${clients}">
+            <td th:text="${c.nom}"></td>
+            <td th:text="${c.telephone}"></td>
+            <td th:text="${c.adresse}"></td>
+            <td th:text="${c.solde}"></td>
+            <td>
+                <div class="table-actions">
+                    <a th:href="@{/clients/edit/{id}(id=${c.id})}" class="btn-action btn-edit">Modifier</a>
+                    <a th:href="@{/clients/delete/{id}(id=${c.id})}"
+                       class="btn-action btn-delete"
+                       onclick="return confirm('Supprimer ce client ?')">
+                        Supprimer
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    setTimeout(function () {
+        const alertBox = document.getElementById("alertBox");
+        if (alertBox) {
+            alertBox.style.display = "none";
+        }
+    }, 5000);
+</script>
+</body>
+</html>

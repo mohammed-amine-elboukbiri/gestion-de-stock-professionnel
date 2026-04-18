@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nouveau Bon</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Nouveau Bon de Livraison</h1>
+
+    <form th:action="@{/bons/save}" th:object="${bonRequest}" method="post">
+        <label>Client</label>
+        <select th:field="*{clientId}" required>
+            <option value="">-- Choisir client --</option>
+            <option th:each="c : ${clients}"
+                    th:value="${c.id}"
+                    th:text="${c.nom}">
+            </option>
+        </select>
+
+        <h3>Lignes</h3>
+
+        <div class="actions-bar">
+            <button type="button" id="add-line-btn" class="btn btn-green">+ Ajouter une ligne</button>
+        </div>
+
+        <table id="lignes-table">
+            <thead>
+            <tr>
+                <th>Catégorie</th>
+                <th>Article</th>
+                <th>Quantité</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="lignes-body">
+            <tr th:each="ligne, stat : *{lignes}" class="ligne-row">
+                <td>
+                    <select th:name="${'lignes[' + stat.index + '].categorie'}"
+                            th:id="${'lignes_' + stat.index + '_categorie'}"
+                            class="categorie-select"
+                            th:attr="data-row=${stat.index}">
+                        <option value="">-- Choisir catégorie --</option>
+                        <option th:each="cat : ${categories}"
+                                th:value="${cat}"
+                                th:text="${cat}">
+                        </option>
+                    </select>
+                </td>
+
+                <td>
+                    <select th:name="${'lignes[' + stat.index + '].articleId'}"
+                            th:id="${'lignes_' + stat.index + '_articleId'}"
+                            class="article-select"
+                            th:attr="data-row=${stat.index}">
+                        <option value="">-- Choisir article --</option>
+                        <option th:each="a : ${articles}"
+                                th:value="${a.id}"
+                                th:text="${a.designation + ' | Stock: ' + a.stock}"
+                                th:attr="data-categorie=${a.categorie}">
+                        </option>
+                    </select>
+                </td>
+
+                <td>
+                    <input type="number"
+                           min="1"
+                           th:name="${'lignes[' + stat.index + '].quantite'}"
+                           th:id="${'lignes_' + stat.index + '_quantite'}">
+                </td>
+
+                <td class="action-cell">
+                    <button type="button" class="btn btn-delete remove-line-btn">Supprimer</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-green btn-full">Créer le bon</button>
+    </form>
+
+    <br>
+    <div class="actions-bar">
+        <a th:href="@{/bons}" class="btn-back">Retour</a>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        const categories = /*[[${categories}]]*/ [];
+        const articles = /*[[${articles}]]*/ [];
+        const lignesBody = document.getElementById("lignes-body");
+        const addLineBtn = document.getElementById("add-line-btn");
+
+        function buildCategoryOptions() {
+            let html = '<option value="">-- Choisir catégorie --</option>';
+            categories.forEach(function (cat) {
+                html += `<option value="${cat}">${cat}</option>`;
+            });
+            return html;
+        }
+
+        function buildArticleOptionsByCategory(category) {
+            let html = '<option value="">-- Choisir article --</option>';
+
+            articles.forEach(function (article) {
+                if (category && article.categorie === category) {
+                    html += `<option value="${article.id}">${article.designation} | Stock: ${article.stock}</option>`;
+                }
+            });
+
+            return html;
+        }
+
+        function createRow(index) {
+            const tr = document.createElement("tr");
+            tr.classList.add("ligne-row");
+
+            tr.innerHTML = `
+                <td>
+                    <select name="lignes[${index}].categorie"
+                            id="lignes_${index}_categorie"
+                            class="categorie-select"
+                            data-row="${index}">
+                        ${buildCategoryOptions()}
+                    </select>
+                </td>
+
+                <td>
+                    <select name="lignes[${index}].articleId"
+                            id="lignes_${index}_articleId"
+                            class="article-select"
+                            data-row="${index}">
+                        <option value="">-- Choisir article --</option>
+                    </select>
+                </td>
+
+                <td>
+                    <input type="number"
+                           min="1"
+                           name="lignes[${index}].quantite"
+                           id="lignes_${index}_quantite">
+                </td>
+
+                <td class="action-cell">
+                    <button type="button" class="btn btn-delete remove-line-btn">Supprimer</button>
+                </td>
+            `;
+
+            return tr;
+        }
+
+        function reindexRows() {
+            const rows = lignesBody.querySelectorAll(".ligne-row");
+
+            rows.forEach(function (row, index) {
+                const categorieSelect = row.querySelector(".categorie-select");
+                const articleSelect = row.querySelector(".article-select");
+                const quantiteInput = row.querySelector('input[type="number"]');
+
+                categorieSelect.setAttribute("name", `lignes[${index}].categorie`);
+                categorieSelect.setAttribute("id", `lignes_${index}_categorie`);
+                categorieSelect.setAttribute("data-row", index);
+
+                articleSelect.setAttribute("name", `lignes[${index}].articleId`);
+                articleSelect.setAttribute("id", `lignes_${index}_articleId`);
+                articleSelect.setAttribute("data-row", index);
+
+                quantiteInput.setAttribute("name", `lignes[${index}].quantite`);
+                quantiteInput.setAttribute("id", `lignes_${index}_quantite`);
+            });
+        }
+
+        function filterArticlesForRow(row) {
+            const categorieSelect = row.querySelector(".categorie-select");
+            const articleSelect = row.querySelector(".article-select");
+            const selectedCategory = categorieSelect.value;
+
+            articleSelect.innerHTML = buildArticleOptionsByCategory(selectedCategory);
+        }
+
+        function bindRowEvents(row) {
+            const categorieSelect = row.querySelector(".categorie-select");
+            const removeBtn = row.querySelector(".remove-line-btn");
+
+            categorieSelect.addEventListener("change", function () {
+                filterArticlesForRow(row);
+            });
+
+            removeBtn.addEventListener("click", function () {
+                const rows = lignesBody.querySelectorAll(".ligne-row");
+
+                if (rows.length === 1) {
+                    row.querySelector(".categorie-select").value = "";
+                    row.querySelector(".article-select").innerHTML = '<option value="">-- Choisir article --</option>';
+                    row.querySelector('input[type="number"]').value = "";
+                    return;
+                }
+
+                row.remove();
+                reindexRows();
+            });
+        }
+
+        addLineBtn.addEventListener("click", function () {
+            const index = lignesBody.querySelectorAll(".ligne-row").length;
+            const newRow = createRow(index);
+            lignesBody.appendChild(newRow);
+            bindRowEvents(newRow);
+        });
+
+        const existingRows = lignesBody.querySelectorAll(".ligne-row");
+        existingRows.forEach(function (row) {
+            bindRowEvents(row);
+        });
+    });
+</script>
+</body>
+</html>

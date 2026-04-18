@@ -1,47 +1,127 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>Gestion de Stock</title>
+    <title>Dashboard Gestion Stock INOX</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="container">
-    <h1>Mini Projet Thymeleaf - Gestion de Stock</h1>
+    <h1>Dashboard Gestion Stock INOX</h1>
 
     <div class="nav">
-        <a th:href="@{/}">Accueil</a>
-        <a th:href="@{/articles}">Articles</a>
-        <a th:href="@{/fournisseurs}">Fournisseurs</a>
+        <a th:href="@{/articles}" sec:authorize="hasRole('ADMIN')">Articles</a>
+        <a th:href="@{/fournisseurs}" sec:authorize="hasRole('ADMIN')">Fournisseurs</a>
         <a th:href="@{/mouvements}">Mouvements</a>
+        <a th:href="@{/clients}">Clients</a>
+        <a th:href="@{/bons}">Bons de livraison</a>
+        <a th:href="@{/paiements}">Paiements</a>
+        <a th:href="@{/exports/articles/excel}" sec:authorize="hasRole('ADMIN')">Export Excel Articles</a>
+
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}" />
+            <button type="submit" class="logout-btn">Déconnexion</button>
+        </form>
     </div>
 
-    <div class="cards">
+    <div class="alert success" sec:authorize="hasRole('ADMIN')">
+        Connecté en tant que <strong>ADMIN</strong>
+    </div>
+
+    <div class="alert success" sec:authorize="hasRole('USER')">
+        Connecté en tant que <strong>USER</strong>. Vous avez accès uniquement aux mouvements, clients, bons de livraison et paiements.
+    </div>
+
+    <!-- STATISTIQUES : ADMIN SEULEMENT -->
+    <div class="cards" sec:authorize="hasRole('ADMIN')">
         <div class="card">
             <h3>Total Articles</h3>
-            <p th:text="${totalArticles}"></p>
+            <p th:text="${stats.totalArticles}"></p>
         </div>
-
+        <div class="card">
+            <h3>Total Clients</h3>
+            <p th:text="${stats.totalClients}"></p>
+        </div>
+        <div class="card">
+            <h3>Total Fournisseurs</h3>
+            <p th:text="${stats.totalFournisseurs}"></p>
+        </div>
+        <div class="card">
+            <h3>Total Bons</h3>
+            <p th:text="${stats.totalBons}"></p>
+        </div>
         <div class="card">
             <h3>Stock Critique</h3>
-            <p th:text="${stockCritique}"></p>
+            <p th:text="${stats.stockCritique}"></p>
         </div>
-
         <div class="card">
-            <h3>Total Stock</h3>
-            <p th:text="${totalStock}"></p>
+            <h3>Valeur Stock</h3>
+            <p th:text="${stats.valeurStock}"></p>
         </div>
-
         <div class="card">
-            <h3>Entrées</h3>
-            <p th:text="${totalEntrees}"></p>
+            <h3>Créances Clients</h3>
+            <p th:text="${stats.totalCreancesClients}"></p>
         </div>
-
         <div class="card">
-            <h3>Sorties</h3>
-            <p th:text="${totalSorties}"></p>
+            <h3>Mouvements Entrée</h3>
+            <p th:text="${stats.totalMouvementsEntree}"></p>
+        </div>
+        <div class="card">
+            <h3>Mouvements Sortie</h3>
+            <p th:text="${stats.totalMouvementsSortie}"></p>
         </div>
     </div>
+
+    <!-- TABLEAU ARTICLES CRITIQUES : ADMIN SEULEMENT -->
+    <div sec:authorize="hasRole('ADMIN')">
+        <h2>Articles en stock critique</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Code</th>
+                <th>Désignation</th>
+                <th>Stock</th>
+                <th>Seuil</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="a : ${articlesCritiques}">
+                <td th:text="${a.code}"></td>
+                <td th:text="${a.designation}"></td>
+                <td th:text="${a.stock}"></td>
+                <td th:text="${a.seuilAlerte}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TOP VALEUR STOCK : ADMIN SEULEMENT -->
+    <div sec:authorize="hasRole('ADMIN')">
+        <h2>Top 10 valeur du stock</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Code</th>
+                <th>Désignation</th>
+                <th>Stock</th>
+                <th>Prix Achat</th>
+                <th>Valeur</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${topValeurStock}">
+                <td th:text="${item.code}"></td>
+                <td th:text="${item.designation}"></td>
+                <td th:text="${item.stock}"></td>
+                <td th:text="${item.prixAchat}"></td>
+                <td th:text="${item.valeur}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 </body>
 </html>
